@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block css_files %}
+{% endblock %}
+
+{% block navbar_left %}
+{% if not is_admin %}
+<ul class="navbar-nav mr-auto" style="font-size: 22px">
+  <li class="nav-item active">
+    <a class="nav-link" href="index.html">主页</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="query.html">查询-购买</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="query.html">我的订单</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="query.html">修改个人信息<span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="about.html">使用说明</a>
+  </li>
+</ul>
+{% else %}
+<ul class="navbar-nav mr-auto" style="font-size: 22px">
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('home') }}">查询-购买</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="query.html">我的订单</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('usermodify') }}">修改个人信息<span class="sr-only">(current)</span></a>
+  </li>
+  <li>
+      <a class="nav-link" href="{{ url_for('home') }}"> 数据库管理 </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="about.html">使用说明</a>
+  </li>
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+<ul class="nav nav-pills">
+  <li class="nav-item dropdown" style="font-size: 22px">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Hi, {{user_name}}</a>
+    <div class="dropdown-menu" x-placement="bottom-start" style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+      <a class="dropdown-item" href="#">我的信息</a>
+      <a class="dropdown-item" href="#">我的订单</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">注销</a>
+    </div>
+  </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+<body background="{{ url_for('static', filename='background.jpg') }}">
+      <div class="col-md-12">
+        <div class="row">
+        <div class="col-md-3">
+        </div>
+          <div class="col-md-6">
+            <div class="form-container jumbotron">
+            <h1 class="display-3">用户信息</h1>
+            <form action="{{ url_for('login') }}" method="post">
+                <br/>
+                <p style="font-size:22px">用户名：</p>
+                <label for="inputUserName" class="sr-only">User name</label>
+                <input type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="inputUsername" name="username" class="form-control" placeholder="User name" value="username" readonly/>
+                <br/>
+                <p style="font-size:22px">姓名：</p>
+                <label for="inputName" class="sr-only">Your Name</label>
+                <input type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="inputName" name="name" class="form-control" pattern="[0-9A-z]+" title="姓名仅支持数字和字母" value="MYname" required autofocus/>
+                <br/>
+                <p style="font-size:22px">邮箱：</p>
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputEmail" name="email" class="form-control" pattern="^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$" title="请输入正确的邮箱" value="ymt@i.com" required autofocus/>
+                <br/>
+                <p style="font-size:22px">电话号码：</p>
+                <label for="inputPhone" class="sr-only">Phone number</label>
+                <input type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputPhone" name="phone" class="form-control" placeholder="Phone number" pattern="[0-9]+" title="请输入大陆电话号码" value="15106285326" required autofocus/>
+                <br/>
+                <p style="font-size:22px">新密码：</p>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" style="width:100%" onblur="ajaxUpdate(this)" id="inputPassword" name="password" class="form-control" placeholder="Password" pattern="[0-9A-z]+" title="password" required/>
+                <br/>
+                <p style="font-size:22px">确认新密码：</p>
+                <label for="irepeatPassword" class="sr-only">Repeat password</label>
+                <input type="password" style="width:100%" onblur="ajaxUpdate(this)" id="repeatPassword" name="repassword" class="form-control" placeholder="Repeat password" pattern="[0-9A-z]+" title="password" required/>
+                <br/>
+                <button class="btn btn-lg btn-primary btn-block col-md-2" type="submit">修改信息</button>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
