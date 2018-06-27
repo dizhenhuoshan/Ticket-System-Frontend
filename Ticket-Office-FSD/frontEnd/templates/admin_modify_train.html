@@ -1,0 +1,380 @@
+主题<!--
+    变量清单:
+        user_id
+        is_admin
+        success_info
+        err_info
+-->
+
+{% extends "base.html" %}
+
+{% block css_files %}
+  <script type="text/javascript">
+      row_num = 1;    // maintain row number
+      col_num = 0;
+
+      // js for add_train form.
+      function add_station() {
+          row_num += 1;
+          $("#stations").append("<div id=\"station" + row_num + "\">\n" +
+              "<br/>" +
+              "    <div class=\"row\">\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <h4>车站" + row_num + "</h4>\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control\" type=\"text\" name=\"station_name" + row_num + "\" placeholder=\"站点名称\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control\" type=\"text\" name=\"arrive_time" + row_num + "\" placeholder=\"到站时间\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control\" type=\"text\" name=\"leave_time" + row_num + "\" placeholder=\"发车时间\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control\" type=\"text\" name=\"wait_time" + row_num + "\" placeholder=\"停留时间\">\n" +
+              "        </div>\n" +
+              "    </div>\n" +
+              "    <div class=\"row\">\n" +
+              "        <div class=\"col-md-2 col-lg-2\"></div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control seat_kind_1\" type=\"text\" name=\"price1" + row_num + "\" placeholder=\"¥ 座位价格1\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control seat_kind_2\" type=\"text\" name=\"price2" + row_num + "\" placeholder=\"¥ 座位价格2\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control seat_kind_3\" type=\"text\" name=\"price3" + row_num + "\" placeholder=\"¥ 座位价格3\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control seat_kind_4\" type=\"text\" name=\"price4" + row_num + "\" placeholder=\"¥ 座位价格4\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required required class=\"form-control seat_kind_5\" type=\"text\" name=\"price5" + row_num + "\" placeholder=\"¥ 座位价格5\">\n" +
+              "        </div>\n" +
+              "    </div>\n" +
+              "</div>");
+          check_seat();
+          set_require();
+      }
+
+      function del_station() {
+          if (row_num > 0) {
+              $("#station" + row_num).remove();
+              row_num -= 1;
+          }
+      }
+
+      function add_seat() {
+          if (col_num < 5) {
+              col_num += 1;
+              let seats = document.getElementsByClassName("seat_kind_".concat(col_num.toString()));
+              for (let i = 0; i < seats.length; ++i) {
+                  seats[i].disabled = false;
+              }
+          }
+      }
+
+      function del_seat() {
+          if (col_num > 0) {
+              let seats = document.getElementsByClassName("seat_kind_".concat(col_num.toString()));
+              for (let i = 0; i < seats.length; ++i) {
+                  seats[i].disabled = true;
+              }
+              col_num -= 1;
+          }
+      }
+
+      // this function set all input to required.
+      function set_require() {
+          let inputs = document.getElementsByTagName('input');
+          for (let i = 0; i < inputs.length; ++i) {
+              inputs[i].required = true;
+          }
+      }
+
+      // this function makes sure that disable is consistency in row level.
+      function check_seat() {
+          for (let i = col_num + 1; i <= 5; i++) {
+              let seats = document.getElementsByClassName("seat_kind_" + i);
+              for (let j = 0; j < seats.length; j++) {
+                  seats[j].disabled = true;
+              }
+          }
+      }
+
+      function set_disable() {
+          for (let i = col_num + 1; i <= 5; ++i) {
+              let seats = document.getElementsByClassName("seat_kind_".concat(i.toString()));
+              for (let j = 0; j < seats.length; ++j) {
+                  seats[j].disabled = true;
+              }
+          }
+      }
+  </script>
+{% endblock %}
+
+{% block navbar_left %}
+  <ul class="navbar-nav mr-auto" style="font-size: 22px">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="{{ url_for('admin_manage_master') }}">数据库管理<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('static',filename='index.html') }}">使用说明</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题<span
+              class="caret"></span></a>
+      <div class="dropdown-menu" aria-labelledby="themes">
+        <a class="dropdown-item" id="Flatly">Default</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="Cerulean">Cerulean</a>
+        <a class="dropdown-item" id="Cosmo">Cosmo</a>
+        <a class="dropdown-item" id="Cyborg">Cyborg</a>
+        <a class="dropdown-item" id="Darkly">Darkly</a>
+        <a class="dropdown-item" id="Journal">Journal</a>
+        <a class="dropdown-item" id="Litera">Litera</a>
+        <a class="dropdown-item" id="Lumen">Lumen</a>
+        <a class="dropdown-item" id="Lux">Lux</a>
+        <a class="dropdown-item" id="Materia">Materia</a>
+        <a class="dropdown-item" id="Minty">Minty</a>
+        <a class="dropdown-item" id="Pulse">Pulse</a>
+        <a class="dropdown-item" id="Sandstone">Sandstone</a>
+        <a class="dropdown-item" id="Simplex">Simplex</a>
+        <a class="dropdown-item" id="Sketchy">Sketchy</a>
+        <a class="dropdown-item" id="Slate">Slate</a>
+        <a class="dropdown-item" id="Solar">Solar</a>
+        <a class="dropdown-item" id="Spacelab">Spacelab</a>
+        <a class="dropdown-item" id="Superhero">Superhero</a>
+        <a class="dropdown-item" id="United">United</a>
+        <a class="dropdown-item" id="Yeti">Yeti</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block navbar_right %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+         aria-expanded="false" style="color: white">Hi, {{ name }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start"
+           style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+  <body>
+  {% for i in range(train_info.seatNum) %}
+    <script>
+        col_num++;
+    </script>
+  {% endfor %}
+
+
+  <div class="container text-center">
+    <form action="{{ url_for('modify_train') }}" style="text-align: center" method="post">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="text-center" style="font-size: 35px;">添加列车</h3>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-2">
+          <h4>车辆综合信息</h4>
+        </div>
+        <div class="col-md-2">
+          <input required required class="form-control" type="text" name="id" placeholder="ID"
+                 value="{{ train_info.id }}">
+        </div>
+        <div class="col-md-2">
+          <input required required class="form-control" type="text" name="name" placeholder="名称"
+                 value="{{ train_info.name }}">
+        </div>
+        <div class="col-md-2">
+          <input required required class="form-control" type="text" name="catalog" placeholder="类型"
+                 value="{{ train_info.catalog }}">
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-2">
+          <h4>座位类型名称</h4>
+        </div>
+
+        {% if 1 <= train_info.seatNum %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_1" type="text" name="seat1" placeholder="座位类型1"
+                   value="{{ train_info.seat[0] }}">
+          </div>
+        {% else %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_1" type="text" name="seat1" placeholder="座位类型1"
+                   disabled="disabled">
+          </div>
+        {% endif %}
+
+        {% if 2 <= train_info.seatNum %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_2" type="text" name="seat2" placeholder="座位类型2"
+                   value="{{ train_info.seat[1] }}">
+          </div>
+        {% else %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_2" type="text" name="seat2" placeholder="座位类型2"
+                   disabled="disabled">
+          </div>
+        {% endif %}
+
+        {% if 3 <= train_info.seatNum %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_3" type="text" name="seat3" placeholder="座位类型3"
+                   value="{{ train_info.seat[2] }}">
+          </div>
+        {% else %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_3" type="text" name="seat3" placeholder="座位类型3"
+                   disabled="disabled">
+          </div>
+        {% endif %}
+
+
+        {% if 4 <= train_info.seatNum %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_4" type="text" name="seat4" placeholder="座位类型4"
+                   value="{{ train_info.seat[3] }}">
+          </div>
+        {% else %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_4" type="text" name="seat4" placeholder="座位类型4"
+                   disabled="disabled">
+          </div>
+        {% endif %}
+
+        {% if 5 <= train_info.seatNum %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_5" type="text" name="seat5" placeholder="座位类型5"
+                   value="{{ train_info.seat[4] }}">
+          </div>
+        {% else %}
+          <div class="col-md-2">
+            <input required required class="form-control seat_kind_5" type="text" name="seat5" placeholder="座位类型5"
+                   disabled="disabled">
+          </div>
+        {% endif %}
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-2">
+          <h4>增删车站</h4>
+        </div>
+        <div class="col-md-1">
+          <div class="row">
+            <div class="col-md-6">
+              <i class="fa fa-plus-circle fa-2x" onclick="add_station()"></i>
+            </div>
+            <div class="col-md-6">
+              <i class="fa fa-2x fa-minus-circle" onclick="del_station()"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-2 text-right">
+          <h4>增删座位</h4>
+        </div>
+        <div class="col-md-1">
+          <div class="row">
+            <div class="col-md-6">
+              <i class="fa fa-plus-circle fa-2x" onclick="add_seat()"></i>
+            </div>
+            <div class="col-md-6">
+              <i class="fa fa-2x fa-minus-circle" onclick="del_seat()"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <br/>
+      <div id="stations">
+        <div id="station1">
+          <br/>
+          <div class="row">
+            <div class="col-md-2 col-lg-2">
+              <h4>车站1</h4>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required required class="form-control" type="text" name="station_name1"
+                     placeholder="站点名称">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control" type="text" name="arrive_time1"
+                     placeholder="到站时间">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control" type="text" name="leave_time1"
+                     placeholder="发车时间">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control" type="text" name="wait_time1"
+                     placeholder="停留时间">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2 col-lg-2"></div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control seat_kind_1" type="text" name="price11"
+                     placeholder="¥ 座位价格1">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control seat_kind_2" type="text" name="price21"
+                     placeholder="¥ 座位价格2">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control seat_kind_3" type="text" name="price31"
+                     placeholder="¥ 座位价格3">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control seat_kind_4" type="text" name="price41"
+                     placeholder="¥ 座位价格4">
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <input required class="form-control seat_kind_5" type="text" name="price51"
+                     placeholder="¥ 座位价格5">
+            </div>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary btn-block" style="font-size: 20px">修改
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  </body>
+  <script>
+      set_disable();
+  </script>
+{% endblock %}

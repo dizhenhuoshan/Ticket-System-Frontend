@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head></head>
+
+<body background="{{ url_for('static', filename='background.jpg') }}">{% extends "base.html" %} {% block css_files %}
+  <script>
+    function go_to_register() {
+          $(document).ready(function () {
+              $("#register_link").click();
+          });
+      }
+  </script> {% endblock %} {% block navbar_left %} {% if not is_admin %}
+  <ul class="navbar-nav mr-auto" style="font-size: 22px">
+    <li class="nav-item active">
+      <a class="nav-link" href="{{ url_for('home') }}">主页
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题
+        <span class="caret"></span>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="themes">
+        <a class="dropdown-item" id="Flatly">Default</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="Cerulean">Cerulean</a>
+        <a class="dropdown-item" id="Cosmo">Cosmo</a>
+        <a class="dropdown-item" id="Cyborg">Cyborg</a>
+        <a class="dropdown-item" id="Darkly">Darkly</a>
+        <a class="dropdown-item" id="Journal">Journal</a>
+        <a class="dropdown-item" id="Litera">Litera</a>
+        <a class="dropdown-item" id="Lumen">Lumen</a>
+        <a class="dropdown-item" id="Lux">Lux</a>
+        <a class="dropdown-item" id="Materia">Materia</a>
+        <a class="dropdown-item" id="Minty">Minty</a>
+        <a class="dropdown-item" id="Pulse">Pulse</a>
+        <a class="dropdown-item" id="Sandstone">Sandstone</a>
+        <a class="dropdown-item" id="Simplex">Simplex</a>
+        <a class="dropdown-item" id="Sketchy">Sketchy</a>
+        <a class="dropdown-item" id="Slate">Slate</a>
+        <a class="dropdown-item" id="Solar">Solar</a>
+        <a class="dropdown-item" id="Spacelab">Spacelab</a>
+        <a class="dropdown-item" id="Superhero">Superhero</a>
+        <a class="dropdown-item" id="United">United</a>
+        <a class="dropdown-item" id="Yeti">Yeti</a>
+      </div>
+    </li>
+  </ul> {% else %}
+  <ul class="navbar-nav mr-auto" style="font-size: 22px">
+    <li class="nav-item active">
+      <a class="nav-link" href="{{ url_for('home') }}">主页
+        <span class="sr-only">(current)</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('admin_manage_master') }}">数据库管理</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题
+        <span class="caret"></span>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="themes">
+        <a class="dropdown-item" id="Flatly">Default</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="Cerulean">Cerulean</a>
+        <a class="dropdown-item" id="Cosmo">Cosmo</a>
+        <a class="dropdown-item" id="Cyborg">Cyborg</a>
+        <a class="dropdown-item" id="Darkly">Darkly</a>
+        <a class="dropdown-item" id="Journal">Journal</a>
+        <a class="dropdown-item" id="Litera">Litera</a>
+        <a class="dropdown-item" id="Lumen">Lumen</a>
+        <a class="dropdown-item" id="Lux">Lux</a>
+        <a class="dropdown-item" id="Materia">Materia</a>
+        <a class="dropdown-item" id="Minty">Minty</a>
+        <a class="dropdown-item" id="Pulse">Pulse</a>
+        <a class="dropdown-item" id="Sandstone">Sandstone</a>
+        <a class="dropdown-item" id="Simplex">Simplex</a>
+        <a class="dropdown-item" id="Sketchy">Sketchy</a>
+        <a class="dropdown-item" id="Slate">Slate</a>
+        <a class="dropdown-item" id="Solar">Solar</a>
+        <a class="dropdown-item" id="Spacelab">Spacelab</a>
+        <a class="dropdown-item" id="Superhero">Superhero</a>
+        <a class="dropdown-item" id="United">United</a>
+        <a class="dropdown-item" id="Yeti">Yeti</a>
+      </div>
+    </li>
+  </ul> {% endif %} {% endblock %} {% block navbar_right %} {% if not name %} {% if not confirm_email %}
+  <form class="form-inline my-2 my-lg-0" action="{{ url_for('register_send_email') }}" method="POST">
+    <a class="nav-link" data-toggle="modal" data-target="#SignupModal" style="color: white; font-size: 22px">注册</a>
+    <div class="modal" id="SignupModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="font-size: 28px">注册</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 style="margin-bottom: 10px;">请输入注册信息</h2>
+            <label for="inputName" class="sr-only">Your name</label>
+            <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputuser_id" name="user_id" class="form-control" placeholder="User name" pattern="[0-9A-z]+" title="用户名仅支持数字和字母" autofocus="">
+            <br>
+            <br>
+            <label for="inputName" class="sr-only">user_id</label>
+            <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputName" name="name" class="form-control" placeholder="Your name" pattern="^[\u4E00-\u9FA5A-Za-z]{2,40}$" title="姓名仅支持数字和字母" autofocus="">
+            <br>
+            <br>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputEmail" name="email" class="form-control" placeholder="Email address" pattern="^[A-Za-z0-9]+([-_.][A-Za-z0-9]+)*@([A-Za-z0-9]+[-.])+[A-Za-z0-9]{2,5}$"
+              title="请输入正确的邮箱" autofocus="">
+            <br>
+            <br>
+            <label for="inputPhone" class="sr-only">Phone number</label>
+            <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputPhone" name="phone" class="form-control" placeholder="Phone number" pattern="[0-9]+" title="请输入大陆电话号码" autofocus="">
+            <br>
+            <br>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input required="" type="password" style="width:100%" onblur="ajaxUpdate(this)" id="inputPassword" name="password" class="form-control" placeholder="Password" pattern="[0-9A-z]+" title="password">
+            <br>
+            <br>
+            <label for="irepeatPassword" class="sr-only">Repeat password</label>
+            <input required="" type="password" style="width:100%" onblur="ajaxUpdate(this)" id="repeatPassword" name="repassword" class="form-control" placeholder="Repeat password" pattern="[0-9A-z]+" title="password">
+            <br>
+            <br>
+            <img class="img-fluid d-block" src="{{ url_for('static', filename=validate_src) }}">
+            <label class="sr-only" for="inputVerificationCode">请输入验证码</label>
+            <input required="" type="text" class="form-control" id="inputVerificationCode" name="validation_code" onblur="ajaxUpdate(this)" pattern="[0-9A-z]+" placeholder="Verification code" style="width:100%" title="password">
+            <br>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">发送验证邮件</button>
+            <br> </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </form> {% else %}
+  <form class="form-inline my-2 my-lg-0" action="{{ url_for('register_confirm_email') }}" method="POST">
+    <a class="nav-link" href="#" id="register_link" data-toggle="modal" data-target="#SignupConfirmModal" style="color: white; font-size: 22px">注册</a>
+    <div class="modal" id="SignupConfirmModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="font-size: 28px">注册</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12" style="text-align: center">
+                <h3>请确认信息并验证邮箱</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-8" style="text-align: left">
+                <h4>用户名：{{ user_info['user_id'] }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-8" style="text-align: left">
+                <h4>昵称：{{ user_info['name'] }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-8" style="text-align: left">
+                <h4>密码：{{ user_info['password'] }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-8" style="text-align: left">
+                <h4>邮箱：{{ user_info['email'] }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-8" style="text-align: left">
+                <h4>手机号码：{{ user_info['phone'] }}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="email_code" name="email_code" class="form-control" placeholder="邮箱验证码"> </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-3"></div>
+              <div class="col-md-6">
+                <button class="btn-lg btn-primary btn-block" type="submit">验证邮箱</button>
+              </div>
+            </div>
+            <br> </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </form> {% endif %}
+  <form class="form-inline my-2 my-lg-0" action="{{ url_for('login') }}" method="post">
+    <a class="nav-link" data-toggle="modal" data-target="#loginModal" style="color: white; font-size: 22px">登录</a>
+    <div class="modal" id="loginModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="font-size: 28px">登录</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 style="margin-bottom: 10px;">欢迎使用</h2>
+            <label for="inputName" class="sr-only">用户名</label>
+            <input required="" type="text" style="width:100%" onblur="ajaxUpdate(this)" id="inputName" name="user_id" class="form-control" placeholder="User name" pattern="[0-9A-z]+" title="姓名仅支持数字和字母" autofocus="">
+            <br>
+            <br>
+            <label for="inputPassword" class="sr-only">密码</label>
+            <input required="" type="password" style="width:100%" onblur="ajaxUpdate(this)" id="inputPassword" name="password" class="form-control" placeholder="Password" pattern="[0-9A-z]+" title="password">
+            <br>
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <br> </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </form> {% else %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="color: white">Hi, {{ name }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start" style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul> {% endif %} {% endblock %} {% block body %}
+  <div class="jumbotron" style="opacity:0.9">
+    <h1 class="display-3" style="text-align: center">Welcome to ACM 12036 Systems!</h1>
+    <p class="lead" style="text-align: center">Enjoy playing and remember to buy enough tickets to go home!</p>
+    <div class="container col-md-12"> {% if success_info and success_info != None %}
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ success_info }}</strong>
+          </div>
+        </div>
+      </div> {% endif %} {% if err_info and err_info != None %}
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ err_info }}</strong>
+          </div>
+        </div>
+      </div> {% endif %}
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card text-white bg-success mb-3" href="{{ url_for('query_order') }}" style="max-width: 50rem;">
+            <div class="card-header" style="font-size: 24px">我的订单</div>
+            <div class="card-body">
+              <img src="{{ url_for('static', filename='ticketsforindex.jpg') }}" alt="车票" width="100%" height="83%/">
+              <p class="card-text" style="font-size: 20px"> 您可以在这里查询已预定车票 </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-white bg-info mb-3" href="{{ url_for('query_tickets') }}" style="max-width: 50rem;">
+            <div class="card-header" style="font-size: 24px">查询车票</div>
+            <div class="card-body">
+              <img src="{{ url_for('static', filename='ticketsforindex.jpg') }}" alt="车票" width="100%" height="83%" href="{{ url_for('query_tickets') }}">
+              <p class="card-text" style="font-size: 20px"> 此处提供车次查询和车票预定服务 </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-white bg-warning mb-3" style="max-width: 50rem;">
+            <div class="card-header" style="font-size: 24px">使用说明</div>
+            <div class="card-body">
+              <img src="{{ url_for('static', filename='ticketsforindex.jpg') }}" alt="车票" width="100%" height="83%/">
+              <p class="card-text" style="font-size: 20px">关于本系统的说明文档</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr class="my-4">
+    <p>This is only for ACM 2018 DataStruct Homework. If you want to buy real train tickets, click this button.</p>
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="http://www.12306.cn" target="_blank" role="button">Visit 12036</a>
+    </p>
+  </div> {% if confirm_email and confirm_email == True %}
+  <script>
+    go_to_register();
+  </script> {% endif %} {% endblock %}
+  <pingendo onclick="window.open('https://pingendo.com/', '_blank')" style="cursor:pointer;position: fixed;bottom: 10px;right:10px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:250px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">Made with Pingendo Free&nbsp;&nbsp;
+    <img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16">
+  </pingendo>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="newdatabase"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="newdatabase">
+				<Option output="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/newdatabase" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/9.1.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 newdatabase"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="newdatabase/fast">
+				<Option output="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/newdatabase" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/9.1.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 newdatabase/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/qiansucheng/Desktop/Ticket-Office/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bill_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bptree/BPlusTree.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bptree/BufferManager.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bptree/TreeNode.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bptree/constant.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/bptree/vector.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/const_recorder.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/constant.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/interpreter.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/main.cpp">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/processor.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/station_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/ticket_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/train_id_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/train_info_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/user_kv.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/utility.h">
+			<Option target="newdatabase"/>
+		</Unit>
+		<Unit filename="/Users/qiansucheng/Desktop/Ticket-Office/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

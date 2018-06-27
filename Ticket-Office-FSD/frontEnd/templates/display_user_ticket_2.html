@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+<!-- 导航栏设置 -->
+{% block css_files %}
+{% endblock %}
+
+{% block navbar_left %}
+  {% if not is_admin %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+    </ul>
+  {% else %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li>
+        <a class="nav-link" href="{{ url_for('home') }}"> 数据库管理 </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+         aria-expanded="false">Hi, {{ name }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start"
+           style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+
+  <body background="{{ url_for('static', filename='background.jpg') }}">
+  <!-- 主填充块 -->
+  <!-- Bootstrap core JavaScript
+      ================================================== -->
+  <div class="jumbotron" style="opacity:0.9">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h2>车票查询：</h2>
+        </div>
+        <div class="col-md-3">
+          <h2>{{ tickets[0].departure }}</h2>
+        </div>
+        <div class="col-md-3" style="text-align: left">
+          <h2>到</h2>
+        </div>
+        <div class="col-md-3">
+          <h2>{{ tickets[0].destination }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" style="background-color: white">
+      <br>
+      <div class="row">
+        <div class="col-md-10">
+          <div class="row" style="text-align: center">
+            <div class="col-md-2">
+              <h4>序号</h4>
+            </div>
+            <div class="col-md-2">
+              <h4>列车ID</h4>
+            </div>
+            <div class="col-md-2">
+              <h4>出发日期</h4>
+            </div>
+            <div class="col-md-2">
+              <h4>出发时间</h4>
+            </div>
+            <div class="col-md-2">
+              <h4>到达日期</h4>
+            </div>
+            <div class="col-md-2">
+              <h4>到达时间</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      {% if tickets != None %}
+        {% for i in range(ticketlen) %}
+          <div class="row">
+            <div class="col-md-10">
+              <div class="row" style="text-align: center">
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ i + 1 }}</h4>
+                </div>
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ tickets[i].id }}</h4>
+                </div>
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ tickets[i].leaveDate }}</h4>
+                </div>
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ tickets[i].leaveTime }}</h4>
+                </div>
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ tickets[i].arriveDate }}</h4>
+                </div>
+                <div class="col-md-2" style="vertical-align:middle">
+                  <h4 style="font-size: 20px">{{ tickets[i].arriveTime }}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1" style="text-align: right">
+              <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample{{ i }}"
+                 aria-expanded="false"
+                 aria-controls="collapseExample{{ i }}">
+                车票信息
+              </a>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+          <br>
+          <div class="collapse" id="collapseExample{{ i }}">
+            <div class="card card-block">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="col-md-2"></div>
+                  <div class="row" style="text-align: center">
+                    <div class="col-md-2">
+                      <h4>座位序号</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>座位名称</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>剩余票数</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>车票价格</h4>
+                    </div>
+                    <div class="col-md-2">
+                      <h4>购买票数</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              {% for j in range(seatlens[i]) %}
+                <form action="../user_buy_ticket/{{ i }}/{{ j }}" method="post">
+                  <div class="row" style="text-align: center">
+                    <div class="col-md-10">
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2">
+                          <h5>{{ j + 1 }}</h5>
+                        </div>
+                        <div class="col-md-2">
+                          <h5>{{ tickets[i].seats[j]['seatname'] }}</h5>
+                        </div>
+                        <div class="col-md-2">
+                          <h5>{{ tickets[i].seats[j]['seatleft'] }}</h5>
+                        </div>
+                        <div class="col-md-2">
+                          <h5>¥ {{ tickets[i].seats[j]['price'] }}</h5>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                              <input required type="number"
+                                     name="ticket-num-{{ i + 1 }}-{{ j + 1 }}" class="form-control h5"
+                                     placeholder="票数{{ i + 1 }}{{ j  + 1 }}">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <button type="submit" class="btn btn-primary btn-block">购买</button>
+                    </div>
+                  </div>
+                </form>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+  <!--
+  <pingendo onclick="window.open('https://pingendo.com/', '_blank')"
+            style="cursor:pointer;position: fixed;bottom: 10px;right:10px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:250px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">
+      Made with Pingendo Free&nbsp;&nbsp;
+      <img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16">
+  </pingendo>
+  -->
+  </body>
+{% endblock %}

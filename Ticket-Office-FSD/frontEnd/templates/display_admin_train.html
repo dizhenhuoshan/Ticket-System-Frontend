@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--以上三个标签必须放在最前面-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--图标设置-->
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}">
+    <!--标题-->
+    <title> ACM 12306 System </title>
+    <!--引入bootswatch-->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/flatly/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-WuViQmTamrPyvMFZjf8te7HpKtdxuzV/HX1yG26a0d8yieIBr+beDf1ME99iX1cM" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <!--引入页面自定义css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body background="{{ url_for('static', filename='shit.jpg') }}">
+<!-- 导航栏设置 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#" style="font-size: 26px">ACM 12306 Ticket System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01"></div>
+</nav>
+<!-- 主填充块 -->
+<!-- Bootstrap core JavaScript
+      ================================================== -->
+<div class="py-5">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-left">{{ train_info.name }}</h1>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-4">
+                <h2 class="">{{ train_info.station[0].name }}</h2>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="fa fa-arrow-left fa-fw fa-3x"></i>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="lead"><strong>请用肉眼算</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fa fa-fw fa-3x fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2 class="">{{ train_info.station[train_info.stationNum - 1].name }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p class="lead">{{ train_info.station[0].leave }}</p>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <p class="lead">{{ train_info.station[train_info.stationNum - 1].arrive }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <thead class="text-center">
+                    <tr>
+                        <th>站点编号</th>
+                        <th>站名</th>
+                        <th>进站时刻</th>
+                        <th>出站时刻</th>
+                        <th>停靠时间</th>
+                        {% for i in range(train_info.seatNum) %}
+                            <th>{{ train_info.seat[i] }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    <tbody class="text-center">
+                    {% for i in range(train_info.stationNum) %}
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ train_info.station[i].name }}</td>
+                            <td>{{ train_info.station[i].arrive }}</td>
+                            <td>{{ train_info.station[i].leave }}</td>
+                            <td>{{ train_info.station[i].wait }}</td>
+                            {% for j in range(train_info.seatNum) %}
+                                <td>{{ train_info.station[i].price[j] }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"
+        integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+<pingendo onclick="window.open('https://pingendo.com/', '_blank')"
+          style="cursor:pointer;position: fixed;bottom: 10px;right:10px;padding:4px;background-color: #00b0eb;border-radius: 8px; width:250px;display:flex;flex-direction:row;align-items:center;justify-content:center;font-size:14px;color:white">
+    Made with Pingendo Free&nbsp;&nbsp;
+    <img src="https://pingendo.com/site-assets/Pingendo_logo_big.png" class="d-block" alt="Pingendo logo" height="16">
+</pingendo>
+</body>
+
+</html>

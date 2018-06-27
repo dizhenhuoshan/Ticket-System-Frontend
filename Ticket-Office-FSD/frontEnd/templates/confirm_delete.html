@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block css_files %}
+{% endblock %}
+
+{% block navbar_left %}
+  {% if not is_admin %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% else %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li>
+        <a class="nav-link" href="{{ url_for('admin_manage_master') }}"> 数据库管理 </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+<ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+           aria-expanded="false" style="color: white">Hi, {{ name }}</a>
+        <div class="dropdown-menu" x-placement="bottom-start"
+             style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+            <a class="dropdown-item" href="{{url_for('user_query_profile')}}">我的信息</a>
+            <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{url_for('logout')}}">注销</a>
+        </div>
+    </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+<body background="{{ url_for('static', filename='background.jpg') }}">
+      <div class="col-md-12">
+        <div class="row">
+        <div class="col-md-3">
+        </div>
+          <div class="col-md-6">
+            <div class="form-container jumbotron">
+            <h1 class="display-3">请确认是否要退票：</h1>
+            <form action="{{ url_for('confirm_delete') }}" method="post">
+                <br/>
+                <p style="font-size:22px">列车id：</p>
+                <label for="train_id" class="sr-only">train_id</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="train_id" name="train_id" class="form-control" value="{{train_id}}" readonly/>
+                <br/>
+                <p style="font-size:22px">出发地：</p>
+                <label for="departure" class="sr-only">departure</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="departure" name="departure" class="form-control" value="{{departure}}" readonly/>
+                <br/>
+                <p style="font-size:22px">出发日期：</p>
+                <label for="leaveDate" class="sr-only">leaveDate</label>
+                <input required type="text" style="width:100; font-size: 20px" onblur="ajaxUpdate(this)" id="leaveDate" name="leaveDate" class="form-control" value="{{leaveDate}}" readonly/>
+                <br/>
+                <p style="font-size:22px">出发时间：</p>
+                <label for="leaveTime" class="sr-only">leaveTime</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="leaveTime" name="leaveTime" class="form-control" value="{{leaveTime}}" readonly/>
+                <br/>
+                <p style="font-size:22px">目的地：</p>
+                <label for="destination" class="sr-only">destination</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="destination" name="destination" class="form-control" value="{{destination}}" readonly/>
+                <br/>
+                <p style="font-size:22px">到达日期：</p>
+                <label for="arriveDate" class="sr-only">arriveDate</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="arriveDate" name="arriveDate" class="form-control" value="{{arriveDate}}" readonly/>
+                <br/>
+                <p style="font-size:22px">到达时间：</p>
+                <label for="arriveTime" class="sr-only">arriveTime</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="arriveTime" name="arriveTime" class="form-control" value="{{arriveTime}}" readonly/>
+                <br/>
+                <p style="font-size:22px">座位种类：</p>
+                <label for="seatname" class="sr-only">seatname</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="seatname" name="seatname" class="form-control" value="{{seatname}}" readonly/>
+                <br/>
+                <p style="font-size:22px">票价：</p>
+                <label for="price" class="sr-only">price</label>
+                <input required type="text" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="price" name="price" class="form-control" value="{{price}}" readonly/>
+                <br/>
+                <p style="font-size:22px">数量：</p>
+                <label for="inputNum" class="sr-only">number</label>
+                <input required type="number" style="width:100%; font-size: 20px" onblur="ajaxUpdate(this)" id="number" name="number" class="form-control" value="{{1}}" min="1" max="{{seatleft}}" required autofocus/>
+                <br/>
+                <button class="btn btn-lg btn-primary btn-block col-md-2" type="submit">确认退票</button>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

@@ -1,0 +1,69 @@
+% extends "base.html" %}
+
+{% block css_files %}
+{% endblock %}
+
+{% block navbar_left %}
+<ul class="navbar-nav mr-auto" style="font-size: 22px">
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('home') }}">主页<span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+  </li>
+  <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">Themes <span class="caret"></span></a>
+      <div class="dropdown-menu" aria-labelledby="themes">
+        <a class="dropdown-item" id="Flatly">Default</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="Cerulean">Cerulean</a>
+        <a class="dropdown-item" id="Cosmo">Cosmo</a>
+        <a class="dropdown-item" id="Cyborg">Cyborg</a>
+        <a class="dropdown-item" id="Darkly">Darkly</a>
+        <a class="dropdown-item" id="Journal">Journal</a>
+        <a class="dropdown-item" id="Litera">Litera</a>
+        <a class="dropdown-item" id="Lumen">Lumen</a>
+        <a class="dropdown-item" id="Lux">Lux</a>
+        <a class="dropdown-item" id="Materia">Materia</a>
+        <a class="dropdown-item" id="Minty">Minty</a>
+        <a class="dropdown-item" id="Pulse">Pulse</a>
+        <a class="dropdown-item" id="Sandstone">Sandstone</a>
+        <a class="dropdown-item" id="Simplex">Simplex</a>
+        <a class="dropdown-item" id="Sketchy">Sketchy</a>
+        <a class="dropdown-item" id="Slate">Slate</a>
+        <a class="dropdown-item" id="Solar">Solar</a>
+        <a class="dropdown-item" id="Spacelab">Spacelab</a>
+        <a class="dropdown-item" id="Superhero">Superhero</a>
+        <a class="dropdown-item" id="United">United</a>
+        <a class="dropdown-item" id="Yeti">Yeti</a>
+      </div>
+  </li>
+</ul>
+{% endblock %}
+
+{% block navbar_right %}
+<form class="form-inline my-2 my-lg-0">
+  <a class="nav-link" href="{{ url_for('home') }}">返回</a>
+</form>
+{% endblock %}
+
+{% block body %}
+<div class="form-container jumbotron col-md-6" style="float: none; display: block; margin-left: auto; margin-right: auto;">
+    <div class="col-md-12" style="text-align: center; float: none; display: block; margin-left: auto; margin-right: auto;">
+        <form class="form-signin" action="{{ url_for('login') }}" method="post">
+          <h2 class="form-signin-heading">Log in with your account ID</h2>
+          <label for="inputID" class="sr-only">Account ID</label>
+          <input required type="userid" id="inputID" name="userid" class="form-control" placeholder="Account ID" pattern="[0-9]+" title="ID should be an integer" required autofocus>
+          <br/>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input required type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" pattern="[0-9A-z]+" title="password should only contain digits and letters" required>
+          <br/>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <p class="signin-hint" style="font-size: 15px;">Don't have an account yet? Register one for free now! <a href="{{ url_for('home') }}">Sign Up</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

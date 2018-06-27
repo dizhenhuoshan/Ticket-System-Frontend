@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--以上三个标签必须放在最前面-->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--图标设置-->
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}">
+    <!--标题-->
+    <title> ACM 12306 System </title>
+    <!--引入bootswatch-->
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/flatly/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-WuViQmTamrPyvMFZjf8te7HpKtdxuzV/HX1yG26a0d8yieIBr+beDf1ME99iX1cM" crossorigin="anonymous">
+    <!--引入页面自定义css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- 引入jquery javascript -->
+    <script src="//libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        let row_num = 1;    // maintain row number
+        $(document).ready(function () {
+            $(".add").click(function () {
+                row_num += 1;
+                $("#stations").append("<div id=\"station" + row_num + "\">\n" +
+                    "<br>" +
+                    "    <div class=\"row\">\n" +
+                    "        <div class=\"col-md-1 col-lg-1\">\n" +
+                    "            <h4>车站" + row_num + "</h4>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" name=\"station_name" + row_num + "\" placeholder=\"站点名称\">\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"arrive_time" + row_num + "\" placeholder=\"到站时间\">\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"leave_time" + row_num + "\" placeholder=\"发车时间\">\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"wait_time" + row_num + "\" placeholder=\"停留时间\">\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "    <div class=\"row\">\n" +
+                    "        <div class=\"col-md-1 col-lg-1\"></div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9]+\" name=\"price1" + row_num + "\" placeholder=\"票价1/¥\" required>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9]+\" name=\"price2" + row_num + "\" placeholder=\"票价2/¥\" required/>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9]+\" name=\"price3" + row_num + "\" placeholder=\"票价3/¥\" required>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9]+\" name=\"price4" + row_num + "\" placeholder=\"票价4/¥\" required>\n" +
+                    "        </div>\n" +
+                    "        <div class=\"col-md-2 col-lg-2\">\n" +
+                    "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9]+\" name=\"price5" + row_num + "\" placeholder=\"票价5/¥\" required>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>");
+            });
+        });
+
+        $(document).ready(function () {
+            $(".del").click(function () {
+                $("#station" + row_num).remove();
+                row_num -= 1;
+            });
+        });
+    </script>
+
+</head>
+
+<body background="{{ url_for('static', filename='shit.jpg') }}">
+<!-- 导航栏设置 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#" style="font-size: 26px">ACM 12306 Ticket System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+            aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01"></div>
+</nav>
+<!-- 主填充块 -->
+<!-- Bootstrap core JavaScript
+  ================================================== -->
+<div class="py-5">
+    <div class="container text-center">
+        <form style="text-align: center">
+            <div class="row">
+                <h2>添加列车</h2>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-2">
+                    <h4>车辆综合信息</h4>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="id" placeholder="ID" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="name" placeholder="名称" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="catalog" placeholder="类型" required/>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-2">
+                    <h4>座位类型名称</h4>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="seat1" placeholder="座位类型1" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="seat1" placeholder="座位类型2" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="seat1" placeholder="座位类型3" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="seat1" placeholder="座位类型4" required/>
+                </div>
+                <div class="col-md-2">
+                    <input required class="form-control" type="text" name="seat1" placeholder="座位类型5" required/>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-2">
+                    <h4>增删车站</h4>
+                </div>
+                <div class="col-md-1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <i class="fa fa-plus-circle fa-2x add"></i>
+                        </div>
+                        <div class="col-md-6">
+                            <i class="fa fa-2x fa-minus-circle del"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="stations">
+                <div id="station1">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-1 col-lg-1">
+                            <h4>车站1</h4>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" type="text" name="station_name1" placeholder="站点名称">
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9x][0-9x]:[0-9x][0-9x]" type="text" name="arrive_time1" placeholder="到站时间" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9x][0-9x]:[0-9x][0-9x]" type="text" name="leave_time1" placeholder="发车时间" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9x][0-9x]:[0-9x][0-9x]" type="text" name="wait_time1" placeholder="停留时间" required/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 col-lg-1"></div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9]+" type="text" name="price11" placeholder="票价1/¥" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9]+" type="text" name="price21" placeholder="票价2/¥" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9]+" type="text" name="price31" placeholder="票价3/¥" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9]+" type="text" name="price41" placeholder="票价4/¥" required/>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <input required class="form-control" pattern="[0-9]+" type="text" name="price51" placeholder="票价5/¥" required/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<button>在每个 p 元素的结尾添加内容</button>
+</body>
+</html>

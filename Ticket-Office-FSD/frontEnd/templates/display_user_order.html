@@ -1,0 +1,258 @@
+<!-- 这是用户查询订单界面
+    参数：
+        用户姓名(不是user_name)
+        is_admin
+        struct order(按照页面中调用的顺序)
+        {
+            trainid
+            leaveLoc
+            leaveDate
+            leaveTime
+            arriveLoc
+            arriveDate
+            arriveTime
+             seats
+            {
+
+            }
+        }
+ -->
+{% extends "base.html" %}
+
+{% block css_files %}
+{% endblock %}
+
+{% block navbar_left %}
+  {% if not is_admin %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% else %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('admin_manage_master') }}">数据库管理</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+<ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+           aria-expanded="false" style="color: white">Hi, {{ name }}</a>
+        <div class="dropdown-menu" x-placement="bottom-start"
+             style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+            <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+            <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+        </div>
+    </li>
+</ul>
+{% endblock %}
+
+{% block body %}
+
+<body background="{{ url_for('static', filename='background.jpg') }}">
+<!-- 主填充块 -->
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<div class="jumbotron" style="opacity:0.9">
+  <h2 class="display-3" style="font-size: 40px">我的购票信息</h2>
+
+    <div class="container-fluid" style="background-color: white; margin-top: 50px">
+        <div class="row" style="text-align: center">
+            <div class="col-md-1">
+                <h4>序号</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>列车ID</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>出发地</h4>
+            </div>
+            <div class="col-md-2">
+                <h4>出发日期</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>出发时间</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>目的地</h4>
+            </div>
+            <div class="col-md-2">
+                <h4>到达日期</h4>
+            </div>
+            <div class="col-md-1">
+                <h4>到达时间</h4>
+            </div>
+        </div>
+        {% if tickets != None %}
+            {% for i in range(ticketlen) %}
+                <div class="row" style="text-align: center;">
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ i + 1 }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ orders[i].id }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ orders[i].departure }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 style="font-size: 20px">{{ orders[i].leaveDate }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ orders[i].leaveTime }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ orders[i].destination }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 style="font-size: 20px">{{ orders[i].arriveDate }}</h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 style="font-size: 20px">{{ orders[i].arriveTime }}</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapseExample{{ i }}" aria-expanded="false" aria-controls="collapseExample{{ i }}">
+                            订单详情
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseExample{{ i }}">
+                    <div class="card card-block">
+                        <div class="row" style="text-align: center;">
+                            <br/>
+                            <br/>
+                            <div class="col-md-2">
+                                <h4 style="font-size: 18px">种类序号</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 style="font-size: 18px">座位名称</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 style="font-size: 18px">购买张数</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4 style="font-size: 18px">购买价格</h4>
+                            </div>
+                            <div class="col-md-2">
+                            </div>
+                            <br/>
+                        </div>
+                        {% for j in range(seatlens[i]) %}
+                            <br/>
+                            <div class="row" style="text-align: center;">
+                                <div class="col-md-2">
+                                    <h4 style="font-size: 16px">{{ j + 1 }}</h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4 style="font-size: 16px">{{ orders[i].seats[j]['seatname'] }}</h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4 style="font-size: 16px">{{ orders[i].seats[j]['seatleft'] }}</h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4 style="font-size: 16px">¥ {{ orders[i].seats[j]['price'] }}</h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-outline-info" href="../../display_delete/{{orders[i].id}}/{{orders[i].departure}}/{{orders[i].destination}}/{{orders[i].leaveDate}}/{{orders[i].leaveTime}}/{{orders[i].arriveDate}}/{{orders[i].arriveTime}}/{{orders[i].seats[j]['seatname']}}/{{orders[i].seats[j]['seatleft']}}/{{orders[i].seats[j]['price']}}" style="font-size: 16px; margin: 3px; padding: 1px">退票</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+</body>
+{% endblock %}

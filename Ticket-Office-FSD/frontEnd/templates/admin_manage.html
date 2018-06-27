@@ -1,0 +1,761 @@
+<!--
+    变量清单:
+        user_id
+        is_admin
+        success_info
+        err_info
+-->
+
+{% extends "base.html" %}
+
+{% block css_files %}
+  <script type="text/javascript">
+      let row_num = 1;    // maintain row number
+      let col_num = 1;
+
+      // js for add_train form.
+      function add_station() {
+          row_num += 1;
+          $("#stations").append("<div id=\"station" + row_num + "\">\n" +
+              "<br/>" +
+              "    <div class=\"row\">\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <h4>车站" + row_num + "</h4>\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control\" type=\"text\" name=\"station_name" + row_num + "\" placeholder=\"站点名称\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"arrive_time" + row_num + "\" placeholder=\"到站时间\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"leave_time" + row_num + "\" placeholder=\"发车时间\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control\" type=\"text\" pattern=\"[0-9x][0-9x]:[0-9x][0-9x]\" name=\"wait_time" + row_num + "\" placeholder=\"停留时间\">\n" +
+              "        </div>\n" +
+              "    </div>\n" +
+              "    <div class=\"row\">\n" +
+              "        <div class=\"col-md-2 col-lg-2\"></div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control seat_kind_1\" type=\"text\" pattern=\"[0-9]+\" name=\"price1" + row_num + "\" placeholder=\"¥ 座位价格1\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control seat_kind_2\" type=\"text\" pattern=\"[0-9]+\" name=\"price2" + row_num + "\" placeholder=\"¥ 座位价格2\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control seat_kind_3\" type=\"text\" pattern=\"[0-9]+\" name=\"price3" + row_num + "\" placeholder=\"¥ 座位价格3\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control seat_kind_4\" type=\"text\" pattern=\"[0-9]+\" name=\"price4" + row_num + "\" placeholder=\"¥ 座位价格4\">\n" +
+              "        </div>\n" +
+              "        <div class=\"col-md-2 col-lg-2\">\n" +
+              "            <input required class=\"form-control seat_kind_5\" type=\"text\" pattern=\"[0-9]+\" name=\"price5" + row_num + "\" placeholder=\"¥ 座位价格5\">\n" +
+              "        </div>\n" +
+              "    </div>\n" +
+              "</div>");
+          check_seat();
+          set_require();
+      }
+
+      function del_station() {
+          if (row_num > 0) {
+              $("#station" + row_num).remove();
+              row_num -= 1;
+          }
+      }
+
+      function add_seat() {
+          if (col_num < 5) {
+              col_num += 1;
+              let seats = document.getElementsByClassName("seat_kind_".concat(col_num.toString()));
+              for (let i = 0; i < seats.length; ++i) {
+                  seats[i].disabled = false;
+              }
+          }
+      }
+
+      function del_seat() {
+          if (col_num > 0) {
+              let seats = document.getElementsByClassName("seat_kind_".concat(col_num.toString()));
+              for (let i = 0; i < seats.length; ++i) {
+                  seats[i].disabled = true;
+              }
+              col_num -= 1;
+          }
+      }
+
+      // this function click 删除发售按钮
+      function go_to_add_panel() {
+          $(document).ready(function () {
+              $("#above_add_button").click();
+          });
+      }
+
+      function go_to_manage_panel() {
+          $(document).ready(function () {
+              $("#above_manage_button").click();
+          });
+      }
+
+      function go_to_admin_panel() {
+          $(document).ready(function () {
+              $("#above_admin_button").click();
+          });
+      }
+
+      // this function set all input to required.
+      function set_require() {
+          let inputs = document.getElementsByTagName('input');
+          for (let i = 0; i < inputs.length; ++i) {
+              inputs[i].required = true;
+          }
+      }
+
+      // this function makes sure that disable is consistency in row level.
+      function check_seat() {
+          for (let i = col_num + 1; i <= 5; i++) {
+              let seats = document.getElementsByClassName("seat_kind_" + i);
+              for (let j = 0; j < seats.length; j++) {
+                  seats[j].disabled = true;
+              }
+          }
+      }
+  </script>
+{% endblock %}
+
+{% block navbar_left %}
+  <ul class="navbar-nav mr-auto" style="font-size: 22px">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息</a>
+    </li>
+    <li class="nav-item active">
+      <a class="nav-link" href="{{ url_for('admin_manage_master') }}">数据库管理<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题<span
+              class="caret"></span></a>
+      <div class="dropdown-menu" aria-labelledby="themes">
+        <a class="dropdown-item" id="Flatly">Default</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="Cerulean">Cerulean</a>
+        <a class="dropdown-item" id="Cosmo">Cosmo</a>
+        <a class="dropdown-item" id="Cyborg">Cyborg</a>
+        <a class="dropdown-item" id="Darkly">Darkly</a>
+        <a class="dropdown-item" id="Journal">Journal</a>
+        <a class="dropdown-item" id="Litera">Litera</a>
+        <a class="dropdown-item" id="Lumen">Lumen</a>
+        <a class="dropdown-item" id="Lux">Lux</a>
+        <a class="dropdown-item" id="Materia">Materia</a>
+        <a class="dropdown-item" id="Minty">Minty</a>
+        <a class="dropdown-item" id="Pulse">Pulse</a>
+        <a class="dropdown-item" id="Sandstone">Sandstone</a>
+        <a class="dropdown-item" id="Simplex">Simplex</a>
+        <a class="dropdown-item" id="Sketchy">Sketchy</a>
+        <a class="dropdown-item" id="Slate">Slate</a>
+        <a class="dropdown-item" id="Solar">Solar</a>
+        <a class="dropdown-item" id="Spacelab">Spacelab</a>
+        <a class="dropdown-item" id="Superhero">Superhero</a>
+        <a class="dropdown-item" id="United">United</a>
+        <a class="dropdown-item" id="Yeti">Yeti</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block navbar_right %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+         aria-expanded="false" style="color: white">Hi, {{ name }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start"
+           style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+  <body>
+
+  <br/>
+  {% if add_err_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ add_err_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if add_success_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ add_success_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if query_err_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ query_err_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if query_success_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ query_success_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if privilege_err_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ privilege_err_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if privilege_success_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ privilege_success_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="container-fluid">
+    <div class="jumbotron" style="opacity:0.9">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link" id="above_add_button" href="#add_content_id" data-toggle="pill">
+                <h4><strong>新增车次</strong></h4></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="above_manage_button" href="#manage_content_id" data-toggle="pill"
+                 style="text-align: justify"><h4>
+                <strong>列车管理</strong>
+              </h4></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="above_admin_button" href="#user_content_id" data-toggle="pill"><h4>
+                <strong>提升管理员</strong></h4></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="above_admin_button" href="#clean_content_id" data-toggle="pill"><h4>
+                <strong>删除数据库</strong></h4></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br/>
+      <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade in" id="add_content_id">
+          <div class="container text-center">
+
+            <form action="{{ url_for('add_train') }}" style="text-align: center" method="post">
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="text-center" style="font-size: 35px;">添加列车</h3>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-2">
+                  <h4>车辆综合信息</h4>
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control" type="text" name="id" placeholder="ID">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control" type="text" name="name" placeholder="名称">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control" type="text" name="catalog" placeholder="类型">
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-2">
+                  <h4>座位类型名称</h4>
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control seat_kind_1" type="text" name="seat1" placeholder="座位类型1">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control seat_kind_2" type="text" name="seat2" placeholder="座位类型2">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control seat_kind_3" type="text" name="seat3" placeholder="座位类型3">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control seat_kind_4" type="text" name="seat4" placeholder="座位类型4">
+                </div>
+                <div class="col-md-2">
+                  <input required class="form-control seat_kind_5" type="text" name="seat5" placeholder="座位类型5">
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-2">
+                  <h4>增删车站</h4>
+                </div>
+                <div class="col-md-1">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <i class="fa fa-plus-circle fa-2x" onclick="add_station()"></i>
+                    </div>
+                    <div class="col-md-6">
+                      <i class="fa fa-2x fa-minus-circle" onclick="del_station()"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-2 text-right">
+                  <h4>增删座位</h4>
+                </div>
+                <div class="col-md-1">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <i class="fa fa-plus-circle fa-2x" onclick="add_seat()"></i>
+                    </div>
+                    <div class="col-md-6">
+                      <i class="fa fa-2x fa-minus-circle" onclick="del_seat()"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div id="stations">
+                <div id="station1">
+                  <br/>
+                  <div class="row">
+                    <div class="col-md-2 col-lg-2">
+                      <h4>车站1</h4>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control" type="text" name="station_name1"
+                             placeholder="站点名称">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control" type="text" name="arrive_time1"
+                             pattern="[0-9x][0-9x]:[0-9x][0-9x]" placeholder="到站时间">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control" type="text" name="leave_time1"
+                             pattern="[0-9x][0-9x]:[0-9x][0-9x]" placeholder="发车时间">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control" type="text" name="wait_time1"
+                             pattern="[0-9x][0-9x]:[0-9x][0-9x]" placeholder="停留时间">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-2 col-lg-2"></div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control seat_kind_1" type="text" name="price11"
+                             pattern="[0-9]+" placeholder="¥ 座位价格1">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control seat_kind_2" type="text" name="price21"
+                             pattern="[0-9]+" placeholder="¥ 座位价格2">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control seat_kind_3" type="text" name="price31"
+                             pattern="[0-9]+" placeholder="¥ 座位价格3">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control seat_kind_4" type="text" name="price41"
+                             pattern="[0-9]+" placeholder="¥ 座位价格4">
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                      <input required class="form-control seat_kind_5" type="text" name="price51"
+                             pattern="[0-9]+" placeholder="¥ 座位价格5">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-5"></div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-primary btn-block" style="font-size: 20px">添加
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="tab-pane fade in" id="manage_content_id">
+          <div class="container">
+
+            {% if train_info == None %}
+              <div class="row">
+                <div class="col-md-3"></div>
+                <form class="col-md-6" id="admin_query_train_form_id"
+                      action="{{ url_for('admin_query_train') }}"
+                      method="post">
+                  <fieldset>
+                    <div class="form-group">
+                      <h3 style="font-size: 35px;text-align: center"><label for="exampleTextarea">查找待管理列车</label>
+                      </h3>
+                      <input required type="text" class="form-control" name="admin_query_train_id"
+                             placeholder="请输入列车ID">
+                      <small id="emailHelp" class="form-text text-muted"
+                             style="text-align: right">
+                        调皮捣蛋会被抓出来的哦
+                      </small>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-4">
+                        <button type="submit" style="font-size: 20px" class="btn btn-primary btn-block">查询
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            {% else %}
+              <div class="container text-center">
+                <div class="row">
+                  <div class="col-md-4" style="text-align: right">
+                    <h4>列车ID：{{ train_info.id }}</h4>
+                  </div>
+                  <div class="col-md-4" style="text-align: center">
+                    <h4>名称：{{ train_info.name }}</h4>
+                  </div>
+                  <div class="col-md-4" style="text-align: left">
+                    <h4>
+                      状态：
+                      {% if train_info.sale %}
+                        已发售
+                      {% else %}
+                        未发售
+                      {% endif %}
+                    </h4>
+                  </div>
+                </div>
+                <br/>
+                <div class="row">
+                  <div class="col-md-4">
+                    <h2 class="">{{ train_info.station[0].name }}</h2>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <i class="fa fa-arrow-left fa-fw fa-3x"></i>
+                      </div>
+                      <div class="col-md-4">
+                        <p class="lead"><strong>请用肉眼算</strong></p>
+                      </div>
+                      <div class="col-md-4">
+                        <i class="fa fa-fw fa-3x fa-arrow-right"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <h2 class="">{{ train_info.station[train_info.stationNum - 1].name }}</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <h4>{{ train_info.station[0].leave }}</h4>
+                  </div>
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">
+                    <h4>{{ train_info.station[train_info.stationNum - 1].arrive }}</h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <table class="table">
+                      <thead class="text-center">
+                      <tr>
+                        <th style="font-size: 22px">站点编号</th>
+                        <th style="font-size: 22px">站名</th>
+                        <th style="font-size: 22px">进站时刻</th>
+                        <th style="font-size: 22px">出站时刻</th>
+                        <th style="font-size: 22px">停靠时间</th>
+                        {% for i in range(train_info.seatNum) %}
+                          <th style="font-size: 22px">{{ train_info.seat[i] }}</th>
+                        {% endfor %}
+                      </tr>
+                      </thead>
+                      <tbody class="text-center">
+                      {% for i in range(train_info.stationNum) %}
+                        <tr>
+                          <td style="font-size: 18px">{{ i + 1 }}</td>
+                          <td style="font-size: 18px">{{ train_info.station[i].name }}</td>
+                          <td style="font-size: 18px">{{ train_info.station[i].arrive }}</td>
+                          <td style="font-size: 18px">{{ train_info.station[i].leave }}</td>
+                          <td style="font-size: 18px">{{ train_info.station[i].wait }}</td>
+                          {% for j in range(train_info.seatNum) %}
+                            <td style="font-size: 18px">{{ train_info.station[i].price[j] }}</td>
+                          {% endfor %}
+                        </tr>
+                      {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-2"></div>
+                  {% if train_info.sale %}
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('sale_train') }}'"
+                              disabled="disabled" class="btn btn-block btn-success" style="font-size: 20px">发售
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('modify_train') }}'"
+                              disabled="disabled" class="btn btn-block btn-info" style="font-size: 20px">修改
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('del_train') }}'"
+                              disabled="disabled" class="btn btn-block btn-danger" style="font-size: 20px">删除
+                      </button>
+                    </div>
+                  {% else %}
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('sale_train') }}'"
+                              class="btn btn-block btn-success" style="font-size: 20px">发售
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('modify_train') }}'"
+                              class="btn btn-block btn-info" style="font-size: 20px">修改
+                      </button>
+                    </div>
+                    <div class="col-md-2">
+                      <button onclick="javascript:window.location.href='{{ url_for('del_train') }}'"
+                              class="btn btn-block btn-danger" style="font-size: 20px">删除
+                      </button>
+                    </div>
+                  {% endif %}
+                  <div class="col-md-2">
+                    <button onclick="javascript:window.location.href='{{ url_for('admin_back_continue_query_train') }}'"
+                            class="btn btn-block btn-primary" style="font-size: 20px">继续查询
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="tab-pane fade in" id="user_content_id">
+          <div class="container">
+
+            {% if user_info == None %}
+              <div class="row">
+                <div class="col-md-3"></div>
+                <form class="col-md-6" id="admin_query_user_id"
+                      action="{{ url_for('admin_query_user') }}"
+                      method="post">
+                  <fieldset>
+                    <div class="form-group">
+                      <h2 style=" font-size: 35px; text-align: center"><label for="exampleTextarea">查找用户信息</label>
+                      </h2>
+                      <input required type="text" class="form-control" name="admin_query_user_id"
+                             placeholder="请输入用户名">
+                      <small id="emailHelp" class="form-text text-muted"
+                             style="text-align: right">
+                        调皮捣蛋会被抓出来的哦
+                      </small>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4"></div>
+                      <div class="col-md-4">
+                        <button type="submit" style="font-size: 20px" class="btn btn-primary btn-block">查询
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            {% else %}
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                  <h3 style="font-size: 35px;text-align: center">用户信息</h3>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">用户名：{{ user_info['user_id'] }}</h4>
+                </div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">姓名： {{ user_info['name'] }}
+                  </h4>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">邮箱：{{ user_info['email'] }}</h4>
+                </div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">电话号码： {{ user_info['phone'] }}
+                  </h4>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">密码：{{ user_info['password'] }}</h4>
+                </div>
+                <div class="col-md-4 text-left">
+                  <h4 style="display: inline-block">权限：
+                    {% if user_info.is_admin == True %}
+                      管理员
+                    {% else %}
+                      普通用户
+                    {% endif %}
+                  </h4>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-2">
+                  {% if user_info.is_admin == False %}
+                    <button type="button" style="font-size: 20px"
+                            class="btn btn-info btn-block align-content-center"
+                            onclick="javascript:window.location.href='{{ url_for('en_admin_user') }}'">
+                      确认提升
+                    </button>
+                  {% else %}
+                    <button type="button" style="font-size: 20px"
+                            class="btn btn-info btn-block align-content-center" disabled="disabled"
+                            onclick="javascript:window.location.href='{{ url_for('en_admin_user') }}'">
+                      确认提升
+                    </button>
+                  {% endif %}
+
+                </div>
+                <div class="col-md-2">
+                  <button onclick="javascript:window.location.href='{{ url_for('admin_back_continue_query_user') }}'"
+                          class="btn btn-block btn-primary" style="font-size: 20px">继续查询
+                  </button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+        </div>
+        <div class="tab-pane fade in" id="clean_content_id">
+          <div class="container">
+
+            <div class="row">
+              <div class="col-md-3"></div>
+              <form class="col-md-6" id="admin_query_user_id"
+                    action="{{ url_for('clean') }}"
+                    method="post">
+                <fieldset>
+                  <div class="form-group">
+                    <h2 style=" font-size: 35px; text-align: center"><label for="exampleTextarea">删除数据库</label>
+                    </h2>
+                    <div class="row">
+                        <h3 style=" font-size: 25px; text-align: center" class="col-md-6">请输入密码</h3>
+                        <input required type="password" class="form-control col-md-6" name="password"
+                        placeholder="输入密码">
+                    </div>
+                    <div class="row">
+                        <h3 style=" font-size: 25px; text-align: center" class="col-md-6">请再次输入密码</h3>
+                        <input required type="password" class="form-control col-md-6" name="repassword"
+                        placeholder="确认密码">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                      <button type="submit" style="font-size: 20px" class="btn btn-danger btn-block">确认删除
+                      </button>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      check_seat();
+  </script>
+  {% if go_to_add != None %}
+    <script>
+        go_to_add_panel();
+    </script>
+  {% endif %}
+
+  {% if go_to_query != None %}
+    <script>
+        go_to_manage_panel();
+    </script>
+  {% endif %}
+
+  {% if go_to_privilege != None %}
+    <script>
+        go_to_admin_panel();
+    </script>
+  {% endif %}
+
+  </body>
+{% endblock %}

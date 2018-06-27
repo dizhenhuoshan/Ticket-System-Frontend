@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--以上三个标签必须放在最前面-->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--图标设置-->
+  <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}">
+  <!--标题-->
+  <title> ACM 12306 System </title>
+  <!-- 可爱小表情 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!--引入bootswatch-->
+  <link href="{{ url_for('static', filename='bootstrap_flatly.min.css') }}" rel="stylesheet" type="text/css"
+        title="Flatly" crossorigin="anonymous"/>
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cerulean/bootstrap.min.css" rel="alternate stylesheet"
+        title="Cerulean" integrity="sha384-0Mou2qXGeXK7k/Ue/a1hspEVcEP2zCpoQZw8/MPeUgISww+VmDJcy2ri9tX0a6iy"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cosmo/bootstrap.min.css" rel="alternate stylesheet"
+        title="Cosmo" integrity="sha384-e5ln1YQrCh2KTj0GVDWxOfDZ53Fd5Uss2u08OZUtzZNrxWfeYC4P7VBWHRDPvJUk"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/cyborg/bootstrap.min.css" rel="alternate stylesheet"
+        title="Cyborg" integrity="sha384-iMvB1cubutqnCw/Xlf3A1lEXHojPMC7dETFR9CYfYENKn8yw6QlyL+BaYmPXEjmo"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/darkly/bootstrap.min.css" rel="alternate stylesheet"
+        title="Darkly" integrity="sha384-ae362vOLHy2F1EfJtpMbNW0i9pNM1TP2l5O4VGYYiLJKsaejqVWibbP6BSf0UU5i"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/journal/bootstrap.min.css" rel="alternate stylesheet"
+        title="Journal" integrity="sha384-RYo6CbRL8rh7rpbkCiH9NYNDn+viHdKTOp1Df1HCOxcq1shtPNZV9s1U/Hot17Qy"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/litera/bootstrap.min.css" rel="alternate stylesheet"
+        title="Litera" integrity="sha384-+YpxMU1QQywaQtI3dMQAwIcu0vVDuOREjQPC59qblQHg9nTdcrUXMPnanUaldUnY"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lumen/bootstrap.min.css" rel="alternate stylesheet"
+        title="Lumen" integrity="sha384-87sz15XXg/vK1YUT8aQFH3EIw5aC/jbpolvTC264SVJfjOIBWv0V/o2FyyKclY8G"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/lux/bootstrap.min.css" rel="alternate stylesheet"
+        title="Lux" integrity="sha384-4KIc2mnKfAA7VjirNLk2Sqp7jxFNq1q8+FhYGxhW2l52lt4HJsfksL+hjswHfbl/"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/materia/bootstrap.min.css" rel="alternate stylesheet"
+        title="Materia" integrity="sha384-B7n8QuRe6UtnoLRAwGkku55zwnr4h8whf+ThXUwwlP9SaeNzHlGR4cOOuEZVMYOL"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/minty/bootstrap.min.css" rel="alternate stylesheet"
+        title="Minty" integrity="sha384-4eGtnTOp6je5m6l1Zcp2WUGR9Y7kJZuAiD3Pk2GAW3uNRgHQSIqcrcAxBipzlbWP"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/pulse/bootstrap.min.css" rel="alternate stylesheet"
+        title="Pulse" integrity="sha384-w1P8UfRjdTYLTgdq8Y19zjdV25oYPMGNzwtm3tIyZ/gK8JPu+8ZW9OVkKhnBuydY"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sandstone/bootstrap.min.css"
+        rel="alternate stylesheet" title="Sandstone"
+        integrity="sha384-7MvlWCBuyFQHTibL0ta2jXuoCAaC8s2FIwWC/olSTVZ2OBod2DVHIXQcvUKdfJSA" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/simplex/bootstrap.min.css" rel="alternate stylesheet"
+        title="Simplex" integrity="sha384-+2gfL/IqcUKKHvrRK8wGmdnTFnce2ph1LXymULY+74y6VrsdZv9yPjQITajHenD9"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/sketchy/bootstrap.min.css" rel="alternate stylesheet"
+        title="Sketchy" integrity="sha384-LlPOZK7jvvPEMrrhdqVlEYmX2u/GWKdcq/p7wuVYAUladqNeK7VN1PUZQDmiqlql"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/slate/bootstrap.min.css" rel="alternate stylesheet"
+        title="Slate" integrity="sha384-T5/MPhcu5PtijW3XQzMbwUJshIZS5VzRn+lpMXRN8EnZpxBc8yDYiGkTj7pTWBXQ"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/solar/bootstrap.min.css" rel="alternate stylesheet"
+        title="Solar" integrity="sha384-5R1YdaymXlWnSzNCZhBMJnL6ZRBonq3cnj8A38eihLMaAb66oNJhErrQy9jIGHkl"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/spacelab/bootstrap.min.css" rel="alternate stylesheet"
+        title="Spacelab" integrity="sha384-TgQmpeh1IG9vQ1WxIzpdfm5FX08N4+Nr5uzpgqvZAKQwWems+NIMmOVIMFxGq6EZ"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/superhero/bootstrap.min.css"
+        rel="alternate stylesheet" title="Superhero"
+        integrity="sha384-fiZOWGBt79dIbkt852eb24nKPxYOvAgtp4v4IUFozlwV/WkvlilK1oTVfPorZdV4" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/united/bootstrap.min.css" rel="alternate stylesheet"
+        title="United" integrity="sha384-9nkB73MkhCaHgW6bdX2EbWnwXl8FUs1fTnR1UKUuic9Zqs/3u9VunCE/0hleKeUs"
+        crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.1/yeti/bootstrap.min.css" rel="alternate stylesheet"
+        title="Yeti" integrity="sha384-yAYSLJjzniZh9Kau9E1v1ma5CzvyHF8fPK/xUpaRx1XTH9r60WxzDivvHG3xm6Hn"
+        crossorigin="anonymous">
+  <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+  <!--引入页面自定义css-->
+
+  {% block css_files %}
+  {% endblock %}
+</head>
+<!-- 导航栏设置 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="{{ url_for('home') }}" style="font-size: 26px">ACM 12306 Ticket System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+          aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    {% block navbar_left %}{% endblock %}
+    {% block navbar_right %} {% endblock %}
+  </div>
+</nav>
+
+<!-- 主填充块 -->
+{% block body %} {% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<script src="{{ url_for('static', filename='bootstrap.min.js') }}" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    // 对切换主题的按钮绑定事件，用来做触发
+    document.getElementById("Cerulean").addEventListener("click", function () {
+        setStyleSheet("Cerulean");
+    });
+    document.getElementById("Cosmo").addEventListener("click", function () {
+        setStyleSheet("Cosmo");
+    });
+    document.getElementById("Cyborg").addEventListener("click", function () {
+        setStyleSheet("Cyborg");
+    });
+    document.getElementById("Darkly").addEventListener("click", function () {
+        setStyleSheet("Darkly");
+    });
+    document.getElementById("Flatly").addEventListener("click", function () {
+        setStyleSheet("Flatly");
+    });
+    document.getElementById("Journal").addEventListener("click", function () {
+        setStyleSheet("Journal");
+    });
+    document.getElementById("Litera").addEventListener("click", function () {
+        setStyleSheet("Litera");
+    });
+    document.getElementById("Lumen").addEventListener("click", function () {
+        setStyleSheet("Lumen");
+    });
+    document.getElementById("Lux").addEventListener("click", function () {
+        setStyleSheet("Lux");
+    });
+    document.getElementById("Materia").addEventListener("click", function () {
+        setStyleSheet("Materia");
+    });
+    document.getElementById("Minty").addEventListener("click", function () {
+        setStyleSheet("Minty");
+    });
+    document.getElementById("Pulse").addEventListener("click", function () {
+        setStyleSheet("Pulse");
+    });
+    document.getElementById("Sandstone").addEventListener("click", function () {
+        setStyleSheet("Sandstone");
+    });
+    document.getElementById("Simplex").addEventListener("click", function () {
+        setStyleSheet("Simplex");
+    });
+    document.getElementById("Sketchy").addEventListener("click", function () {
+        setStyleSheet("Sketchy");
+    });
+    document.getElementById("Slate").addEventListener("click", function () {
+        setStyleSheet("Slate");
+    });
+    document.getElementById("Solar").addEventListener("click", function () {
+        setStyleSheet("Solar");
+    });
+    document.getElementById("Spacelab").addEventListener("click", function () {
+        setStyleSheet("Spacelab");
+    });
+    document.getElementById("Superhero").addEventListener("click", function () {
+        setStyleSheet("Superhero");
+    });
+    document.getElementById("United").addEventListener("click", function () {
+        setStyleSheet("United");
+    });
+    document.getElementById("Yeti").addEventListener("click", function () {
+        setStyleSheet("Yeti");
+    });
+
+    /**
+     * 查找所有的link标签，找到符合条件的css进行切换
+     * @title:需要切换的css文件名称，也可以是某值，主要是能够找到所要切换的link标签
+     **/
+    function setStyleSheet(title) {
+        // 首先找到DOM中所有的link标签
+        var link_list = document.getElementsByTagName("link");
+        if (link_list) {
+            for (var i = 0; i < link_list.length; i++) {
+                // 要找到所有link中rel属性值包括style的，也就是包括stylesheet和alternate stylesheet;
+                if (link_list[i].getAttribute("rel").indexOf("style") != -1) {
+                    // 将符合条件的link的disabled的属性设为true，都改为禁用；
+                    link_list[i].disabled = true;
+                    // 然后判断link标签中的title属性，找到我们需要替换的css文件
+                    // 找到后将该link的disabled改为启用；
+                    if (link_list[i].getAttribute("title") === title) {
+                        link_list[i].disabled = false;
+                    }
+                }
+            }
+        }
+    };
+</script>
+</html>

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block css_files %}
+
+{% endblock %}
+
+{% block navbar_left %}
+  {% if not is_admin %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% else %}
+    <ul class="navbar-nav mr-auto" style="font-size: 22px">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('admin_manage_master') }}">数据库管理</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+      </li>
+      <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="themes" aria-expanded="false">主题 <span class="caret"></span></a>
+          <div class="dropdown-menu" aria-labelledby="themes">
+            <a class="dropdown-item" id="Flatly">Default</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" id="Cerulean">Cerulean</a>
+            <a class="dropdown-item" id="Cosmo">Cosmo</a>
+            <a class="dropdown-item" id="Cyborg">Cyborg</a>
+            <a class="dropdown-item" id="Darkly">Darkly</a>
+            <a class="dropdown-item" id="Journal">Journal</a>
+            <a class="dropdown-item" id="Litera">Litera</a>
+            <a class="dropdown-item" id="Lumen">Lumen</a>
+            <a class="dropdown-item" id="Lux">Lux</a>
+            <a class="dropdown-item" id="Materia">Materia</a>
+            <a class="dropdown-item" id="Minty">Minty</a>
+            <a class="dropdown-item" id="Pulse">Pulse</a>
+            <a class="dropdown-item" id="Sandstone">Sandstone</a>
+            <a class="dropdown-item" id="Simplex">Simplex</a>
+            <a class="dropdown-item" id="Sketchy">Sketchy</a>
+            <a class="dropdown-item" id="Slate">Slate</a>
+            <a class="dropdown-item" id="Solar">Solar</a>
+            <a class="dropdown-item" id="Spacelab">Spacelab</a>
+            <a class="dropdown-item" id="Superhero">Superhero</a>
+            <a class="dropdown-item" id="United">United</a>
+            <a class="dropdown-item" id="Yeti">Yeti</a>
+          </div>
+      </li>
+    </ul>
+  {% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+         aria-expanded="false" style="color: white">Hi, {{ user_info['name'] }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start"
+           style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+<body background="/static/background.jpg">
+
+
+<div class="container col-md-12">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+      <div class="form-container jumbotron">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-6" style="text-align: center;">
+            <h1>用户信息</h1>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3 text-right">
+            <h4 style="display: inline-block">用户名：</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 style="display: inline-block;">
+              {{ user_info['user_id'] }}
+            </h4>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3 text-right">
+            <h4 style="display: inline-block">姓名：</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 style="display: inline-block;">
+              {{ user_info['name'] }}
+            </h4>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3 text-right">
+            <h4 style="display: inline-block">邮箱：</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 style="display: inline-block;">
+              {{ user_info['email'] }}
+            </h4>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3 text-right">
+            <h4 style="display: inline-block">电话号码：</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 style="display: inline-block;">
+              {{ user_info['phone'] }}
+            </h4>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-3 text-right">
+            <h4 style="display: inline-block">密码：</h4>
+          </div>
+          <div class="col-md-4">
+            <h4 style="display: inline-block;">
+              {{ user_info['password'] }}
+            </h4>
+          </div>
+        </div>
+        <br/>
+        <form action="{{ url_for('user_confirm_profile') }}" method="post">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4 text-right">
+              <h4 style="display: inline-block">邮箱验证码：</h4>
+            </div>
+            <div class="col-md-4">
+              <input required type="text" style="width:100%" onblur="ajaxUpdate(this)" id="email_code"
+                     name="email_code" class="form-control" placeholder="邮箱验证码" required/>
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+              <button type="submit" class="btn btn-block btn-primary" style="font-size: 20px">邮箱验证，确认修改。
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+{% endblock %}

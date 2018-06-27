@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block css_files %}
+
+{% endblock %}
+
+{% block navbar_left %}
+{% if not is_admin %}
+<ul class="navbar-nav mr-auto" style="font-size: 22px">
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('home')}}">主页</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息<span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+  </li>
+</ul>
+{% else %}
+<ul class="navbar-nav mr-auto" style="font-size: 22px">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('home') }}">主页</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('query_tickets') }}">查询-购买</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('query_order') }}">我的订单</a>
+  </li>
+  <li class="nav-item active">
+    <a class="nav-link" href="{{ url_for('user_modify_profile') }}">修改个人信息<span class="sr-only">(current)</span></a>
+  </li>
+  <li>
+      <a class="nav-link" href="{{ url_for('home') }}"> 数据库管理 </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{{url_for('static',filename='index.html')}}">使用说明</a>
+  </li>
+</ul>
+{% endif %}
+{% endblock %}
+
+{% block navbar_right %}
+  <ul class="nav nav-pills">
+    <li class="nav-item dropdown" style="font-size: 22px">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+         aria-expanded="false" style="color: white">Hi, {{ user_info['name'] }}</a>
+      <div class="dropdown-menu" x-placement="bottom-start"
+           style="font-size: 18px; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+        <a class="dropdown-item" href="{{ url_for('user_query_profile') }}">我的信息</a>
+        <a class="dropdown-item" href="{{ url_for('query_order') }}">我的订单</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ url_for('logout') }}">注销</a>
+      </div>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block body %}
+  <body background="{{ url_for('static', filename='background.jpg') }}">
+  {% if profile_err_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ profile_err_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if profile_success_msg != None %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ profile_success_msg }}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="container col-md-12">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+        {% if user_modify_profile == True %}
+          <div class="form-container jumbotron">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-6">
+                <h1 class="display-5">用户信息</h1>
+              </div>
+            </div>
+            <form action="{{ url_for('user_modify_profile') }}" method="post">
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">用户名：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="inputName"
+                         name="name" class="form-control" pattern="[0-9A-z]+" title="姓名仅支持数字和字母"
+                         placeholder="name" value="{{ user_info['username'] }}">
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">姓名：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="inputName"
+                         name="name" class="form-control" pattern="[0-9A-z]+" title="姓名仅支持数字和字母"
+                         placeholder="name" value="{{ user_info['name'] }}">
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">邮箱：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="inputEmail"
+                         name="email" class="form-control"
+                         pattern="^[A-Za-z0-9]+([-_.][A-Za-z0-9]+)*@([A-Za-z0-9]+[-.])+[A-Za-z0-9]{2,5}$"
+                         title="请输入正确的邮箱" placeholder="email" value="{{ user_info['email'] }}" required autofocus/>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">电话号码：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="inputPhone"
+                         name="phone" class="form-control"
+                         pattern="[0-9]+" title="请输入大陆电话号码" placeholder="phone number" value="{{ user_info['phone'] }}"
+                         required autofocus/>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">新密码：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="inputPassword"
+                         name="password" class="form-control"
+                         pattern="[0-9A-z]+" title="password" placeholder="Password"
+                         required/>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3 text-right">
+                  <h4 style="display: inline-block">确认密码：</h4>
+                </div>
+                <div class="col-md-8">
+                  <input required type="text" style="display: inline-block; font-size: large;" id="repeatPassword"
+                         name="repassword" class="form-control"
+                         pattern="[0-9A-z]+" title="password" placeholder="Repeat Password" required/>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                  <button onclick="javascript:window.location.href='{{ url_for('user_query_profile') }}'"
+                          class="btn btn-primary btn-block" style="font-size: 20px">返回
+                  </button>
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-primary btn-block" style="font-size: 20px" type="submit">修改信息</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        {% else %}
+          <div class="form-container jumbotron">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-6">
+                <h1 class="display-5">用户信息</h1>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">用户名：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {{ user_info['username'] }}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">姓名：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {{ user_info['name'] }}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">邮箱：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {{ user_info['email'] }}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">电话号码：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {{ user_info['phone'] }}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">密码：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {{ user_info['password'] }}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+            <div class="col-md-2"></div>
+              <div class="col-md-3 text-right">
+                <h4 style="display: inline-block">权限：</h4>
+              </div>
+              <div class="col-md-4">
+                <h4 style="display: inline-block;">
+                  {% if user_info['is_admin'] == True %}
+                    管理员
+                  {% else %}
+                    普通用户
+                  {% endif %}
+                </h4>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-4"></div>
+              <div class="col-md-3">
+                 <button onclick="javascript:window.location.href='{{ url_for('user_modify_profile') }}'"
+                          class="btn btn-block btn-primary" style="font-size: 20px">编辑
+                  </button>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  </body>
+{% endblock %}
